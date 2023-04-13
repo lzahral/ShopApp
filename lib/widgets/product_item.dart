@@ -31,11 +31,21 @@ class ProductItem extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             trailing: IconButton(
-              icon: const Icon(Icons.shopping_cart),
-              color: Theme.of(context).colorScheme.secondary,
-              onPressed: () =>
-                  cart.addItem(product.id, product.title, product.price),
-            ),
+                icon: const Icon(Icons.shopping_cart),
+                color: Theme.of(context).colorScheme.secondary,
+                onPressed: () {
+                  cart.addItem(product.id, product.title, product.price);
+                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: const Text(
+                      'added item to cart!',
+                    ),
+                    duration: const Duration(seconds: 2),
+                    action: SnackBarAction(
+                        label: 'UNDO',
+                        onPressed: () => cart.removeSingleItem(product.id)),
+                  ));
+                }),
           ),
           child: GestureDetector(
             onTap: () {
